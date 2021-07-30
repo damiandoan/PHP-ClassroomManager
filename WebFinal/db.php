@@ -43,4 +43,7 @@ function login($email, $password){
         return $data;}
 
 }
+function reset_password($email){
+    
+}
 ?>

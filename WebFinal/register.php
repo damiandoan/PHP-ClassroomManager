@@ -103,6 +103,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src = 'main.js'></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -116,7 +117,7 @@
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark  ">
   <a class="navbar-brand" href="#">
-  <h1  >Classes Management System</h1>
+  <h1  >Classroom Management System</h1>
   </a>
 </nav>
 <div id = 'login-div' class="col-lg-5 col-md-7 col-sm-10 col-10">
@@ -149,7 +150,7 @@
             <input type="password" name = 'c_password' class="form-control" placeholder="Enter passwowrd again" id="c_pwd">
         </div>
         <button id = 'form-button' type="submit" class="btn btn-primary form-button">Create</button>
-
+        <p> <?= $err?></p>
 </div>
 
 </body>

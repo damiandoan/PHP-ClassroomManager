@@ -34,3 +34,8 @@ div h2 {
 .form-button{
     margin-bottom: 50px;
 }
+
+
+#sign-out-form{
+   display: none;
+}

@@ -92,7 +92,7 @@
         <div class="form-link" > <a href="register.php">Don't have  an account? Create one.</a> </div>
         </form> 
         </div> 
-        <p> <?= $err?></p>
+        <p class ='error-alert'> <?= $err?></p>
 
 </div>
 

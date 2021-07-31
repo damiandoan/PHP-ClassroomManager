@@ -1,5 +1,5 @@
 <?php
-    include('database.php');
+    require('database.php');
     if(isset($_POST['fullname']) && isset($_POST['email']) && isset($_POST['department_name']) && isset($_POST['password']) && isset($_POST['c_password']) && isset($_POST['tel'])){
          print_r($_POST);
          $fullname = $_POST['fullname'];
@@ -9,7 +9,6 @@
          $department_name = $_POST['department_name'];
          $tel = $_POST['tel'];
          $err = '';
-         echo "$fullname, $email, $password, $c_password, $department_name, $tel";
          if(empty(trim($fullname))){
              $err = 'Please enter your full name';
          }
@@ -29,16 +28,18 @@
             $err = 'Please cofirm your password';
         }
         else{
-                    // if(is_existed_email($email)==true){
-                    //     $err= 'this email is not available';
-                    // }
+                    if (is_email_existed($email)==true){
+                        $err = 'email already taken';
+                    }
+                    
+                    
                     if(strlen($password)<6){
                         $err ='password too short, require more than 6 characters';
                     }
                     if($password != $c_password){
                         $err = 'confirm password is invalid';
                     }
-                    $stmt->close();
+                    
 
                     if($err == ''){
                         //
@@ -64,7 +65,6 @@
                         //
                          }
                     }
-                    echo "$err";
                     
                     
             
@@ -130,7 +130,7 @@
             <input type="password" name = 'c_password' class="form-control" placeholder="Enter passwowrd again" id="c_pwd">
         </div>
         <button id = 'form-button' type="submit" class="btn btn-primary form-button">Create</button>
-        <p> <?= $err?></p>
+        <p class ='error-alert'> <?= $err?></p>
 </div>
 
 </body>

@@ -26,11 +26,10 @@ else{
 }
 
 }
-function is_existed_email($email){
+function is_email_existed($email){
     //check if the email is already registed
     $sql = "SELECT email FROM user WHERE email= ?";
     $connection = create_connection();
-    echo "oke roi";
 
             $stmt = $connection->prepare($sql);
             // Bind variables to the prepared statement as parameters
@@ -45,14 +44,10 @@ function is_existed_email($email){
                 if($stmt->num_rows == 1){
                     return true;
                 }
+                
+                $stmt->close();
                 return false;
-            
-            }
-            else{
-                $err = 'cannot connect to server';
-                return true;
-            }
-
+            } 
 }
 function login($email, $password){
     $sql = 'select * from user where email = ?';
@@ -90,8 +85,9 @@ function send_reset_password_email($email, $token){
                 'allow_self_signed' => true
             )
             );
-        $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
-        $mail->isSMTP();                                            //Send using SMTP
+        // $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+        $mail->isSMTP();
+        $mail ->CharSet = 'UTF-8';                                            //Send using SMTP
         $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
         $mail->Username   = 'daudaihoc040501@gmail.com';                     //SMTP username
@@ -114,11 +110,10 @@ function send_reset_password_email($email, $token){
         //Content
         $mail->isHTML(true);                                  //Set email format to HTML
         $mail->Subject = 'Reset Password for Classroom management system account';
-        $mail->Body    = "<a href='http://localhost:8888/change_password.php?email=$email&token=$token/'> Click here to change password.</a> ";
+        $mail->Body    = "<a href='http://localhost:8888/change_password.php?email=$email&token=$token'> Click here to change password.</a> ";
         // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
     
         $mail->send();
-        echo 'Message has been sent';
         return true;
     } catch (Exception $e) {
         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";

@@ -1,6 +1,60 @@
 <?php
-//if user loggin move to homepage
-   session_start();
+include('database.php');
+if(isset($_GET['email']) && isset($_GET['token'])){
+
+    $email = $_GET['email'];
+    $token = $_GET['token'];
+    
+    //test is token and email legal
+    $sql = 'SELECT * from password_token where email = ? and token = ? and expired_time>?';
+    $connection = create_connection();
+    $stmt = $connection->prepare($sql);
+    
+    $curr_time = time();
+    $stmt -> bind_param('ssi', $email, $token, $curr_time);
+    echo $email, $token, $curr_time;
+    if(!$stmt->execute()){
+        $err = 'Sorry! something went wrong';
+    }
+    else{
+        $stmt->store_result();
+        
+        if ($stmt->num_rows == 0){
+            echo "password reset request is invalid request or expired "; 
+        }
+        else{
+            if(isset($_POST['password']) && isset($_POST['c_password'])){
+                $password = $_POST['password'];
+                $c_password = $_POST['c_password'];
+                if ($password != $c_password){
+                    $err = 'confirm password is invalid';
+                }
+                else{
+                    $sql = 'UPDATE user set user_password = ? where email = ?';
+                    $connection = create_connection();
+                    $stmt = $connection->prepare($sql);
+                    $password = password_hash($password, PASSWORD_BCRYPT);
+                    $stmt -> bind_param('ss', $password, $email);
+    
+                    if(!$stmt->execute()){
+                        $err = 'Sorry! something went wrong';
+                    }
+                    else{
+                        if ($stmt->affected_rows == 1){
+                        $alert = 'Change password successfully!';
+                        }
+                        else{
+                            $err = 'something when wrong';
+                        }
+                    }
+                }
+            }
+        }
+    }
+}else{
+    header('location: reset_password.php');
+}
+   
    
   
 
@@ -33,7 +87,7 @@
 <div id = 'login-div' class="col-lg-5 col-md-7 col-sm-10 col-10">
 
         <div id = 'login-container' class="container" >
-        <form action="reset.php" method = 'post'>
+        <form action="change_password.php?email=<?=$email?>&token=<?=$token?>" method = 'post'>
         <div class = "form-group"><h2>Reset Password</h2> </div>
         <div class="form-group justify-content-center">
             <label >Reset password for <?= $email?> </label>
@@ -51,6 +105,7 @@
         </form> 
         </div> 
         <p> <?= $err?></p>
+        <p> <?= $alert?></p>
 
 </div>
 

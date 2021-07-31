@@ -34,15 +34,8 @@ div h2 {
 .form-button{
     margin-bottom: 50px;
 }
-.row {
-    padding-top: 100px;
-}
-.card {
-    margin-top: 50px;
-}
-.al1{
-    padding-top: 100px;
-}
-.al2{
-    margin-left: 10px;
+
+
+#sign-out-form{
+   display: none;
 }

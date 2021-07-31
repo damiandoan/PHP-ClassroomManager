@@ -1,7 +1,17 @@
 <?php
-//check is that user logined
-//   session_start()
-  
+// check is that user logined
+session_start();
+   if (!isset($_SESSION['fullname'])){
+       header( "Location: login.php");
+       exit();
+   }
+
+   //erease anything in session
+  if(isset($_SESSION['logout'])){
+    session_destroy();
+    header( "Location: login.php");
+       exit();
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,10 +21,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src = 'main.js'> </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <title>classview</title>
+    <title>homepage</title>
 </head>
 <body>
 
@@ -22,40 +33,49 @@
 
 
 
-  <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top ">
-    <a class="navbar-brand" href="#">
-    <h2>Classes Management System</h2>
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="collapsibleNavbar">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="homepage.php">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Add class</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Search</a>
-        </li>
-        <!-- Dropdown -->
-      <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-          Options
-      </a>
-      <div class="dropdown-menu">
-          <a class="dropdown-item" href="#">Link 1</a>
-          <a class="dropdown-item" href="#">Link 2</a>
-          <a class="dropdown-item" href="#">Link 3</a>
-      </div>
-      </li>    
-      </ul>
-    </div>  
-  </nav>
-  <!-- card class -->
-  <div class="container">
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <a class="navbar-brand" href="#">
+  <h1  >Classes Management System</h1>
+  </a>
+  <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Find your class" aria-label="Search">
+        <button class="btn btn-primary" type="submit">Search</button>
+      </form>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+      <button type ='submit' name = 'sign-out' form = 'add-class' class="btn btn-dark" href="#" id = 'add-class'>Add Class</a>
+      </li>
+      <li class="nav-item">
+       <!-- empty-->
+      </li>
+      <li class="nav-item">
+        <!-- empty-->
+      </li>
+       <!-- Dropdown -->
+    <li class="nav-item dropdown">
+    <button class="btn btn-dark  dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+      <?= htmlspecialchars($_SESSION["fullname"])?>
+</button>
+    <div class="dropdown-menu">
+       <button type ='submit' name = 'sign-out' form = 'sign-out-form' class="dropdown-item btn" href="#" id = 'sign-out-button'>Sign Out</a>
+        
+    </div>
+    </li>    
+    </ul>
+  </div>  
+</nav>
+
+<form action = 'logout.php' method = 'post' id = 'sign-out-form'></form>
+
+
+
+
+
+<div class="container">
       <div class="row">
         <div class="col-md-4">
           <div class="card" >
@@ -184,5 +204,6 @@
         
       </div>
   </div>
+
 </body>
 </html>

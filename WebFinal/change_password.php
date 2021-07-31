@@ -1,44 +1,8 @@
 <?php
 //if user loggin move to homepage
    session_start();
-   if (isset($_SESSION['fullname'])){
-       header( "Location: homepage.php");
-       exit();
-   }
-   require('db.php');
-   $error = '';
-   $email = '';
-   $password = '';
-   $email_error = '';
-   $password_error = '';
-
-   if(isset($_POST['email']) && isset($_POST['password'])){
-       $email = $_POST['email'];
-       $password = $_POST['password'];
-
-       if (empty($email)){
-           $email_error = 'Please enter email';
-       }
-       else if (empty($password)){
-        $password_error = 'Please enter password';
-       }
-       else {
-            $data = login($email, $password);
-           
-           if ($data){
-               print_r($email);
-               $_SESSION['fullname'] = $data['fullname'];
-               header('Location: homepage.php');
-               exit();
-               //more data
-           }
-           else{
-               $error = 'Invalid email or password';
-           }
-
-       }
-
-   }
+   
+  
 
   
 ?>
@@ -66,7 +30,7 @@
   <h1  >Classes Management System</h1>
   </a>
 </nav>
-<div id = 'reset-password-div' class="col-lg-5 col-md-7 col-sm-10 col-10">
+<div id = 'login-div' class="col-lg-5 col-md-7 col-sm-10 col-10">
 
         <div id = 'login-container' class="container" >
         <form action="reset.php" method = 'post'>

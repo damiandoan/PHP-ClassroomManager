@@ -1,5 +1,5 @@
 <?php
-    require('db.php');
+    include('database.php');
     if(isset($_POST['fullname']) && isset($_POST['email']) && isset($_POST['department_name']) && isset($_POST['password']) && isset($_POST['c_password']) && isset($_POST['tel'])){
          print_r($_POST);
          $fullname = $_POST['fullname'];
@@ -29,29 +29,9 @@
             $err = 'Please cofirm your password';
         }
         else{
-            //check if the email is already registed
-            $sql = "SELECT email FROM user WHERE email= ?";
-            $connection = create_connection();
-            echo "oke roi";
-        
-                    $stmt = $connection->prepare($sql);
-                    // Bind variables to the prepared statement as parameters
-                    $stmt->bind_param("s", $email);
-                    
-                    // Set parameters
-                    // Attempt to execute the prepared statement
-                    if($stmt->execute()){
-                        // store result
-                        $stmt->store_result();
-                        
-                        if($stmt->num_rows == 1){
-                            $err = "This username is already taken.";
-                        }
-                        
-                    
-                    }else{
-                        $err = "something went wrong!";
-                    }
+                    // if(is_existed_email($email)==true){
+                    //     $err= 'this email is not available';
+                    // }
                     if(strlen($password)<6){
                         $err ='password too short, require more than 6 characters';
                     }

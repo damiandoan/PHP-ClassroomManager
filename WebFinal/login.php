@@ -5,7 +5,7 @@
        header( "Location: homepage.php");
        exit();
    }
-   require('db.php');
+   require('database.php');
    $error = '';
    $email = '';
    $password = '';
@@ -67,7 +67,7 @@
   <h1  >Classroom Management System</h1>
   </a>
 </nav>
-<div id = 'login-div' class="col-lg-5 col-md-7 col-sm-10 col-10">
+<div id ='login-div' class="col-lg-5 col-md-7 col-sm-10 col-10 ">
 
         <div id = 'login-container' class="container" >
         <form action="login.php" method = 'post'>

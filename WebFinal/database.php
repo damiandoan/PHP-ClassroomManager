@@ -55,7 +55,6 @@ function login($email, $password){
     $stm = $connection->prepare($sql);
     $stm->bind_param('s',  $email);
     if (!$stm->execute()){
-        //khong chay dc
         return null;
     }
     $result = $stm->get_result();
@@ -66,7 +65,6 @@ function login($email, $password){
     $data = $result->fetch_assoc();
     $hashed_password = $data['user_password'];
     if (!password_verify($password, $hashed_password)){
-        //sai mat khau
         echo "sai mat khau";
         return null;
     }
@@ -120,7 +118,81 @@ function send_reset_password_email($email, $token){
         return false;
     }
 }
-function reset_password($email){
 
+function add_classroom($classroom_name, $subject, $room_ID, $course_length, $email){
+    $sql = 'INSERT INTO classroom ( classroom_name, `subject`, room_ID, `image`, course_length, teacher_email) VALUES ( ?, ?, ?, ?, ?, ?)';
+    $connection = create_connection();
+    $stmt = $connection->prepare($sql);
+    if( !empty($_FILES)){
+         
+        $image = upload_classroom_photo($email.$classroom_name);
+    }
+    else{
+        $image = NULL;
+    }
+    $stmt->bind_param('ssssis', $classroom_name, $subject, $room_ID, $image,$course_length, $email);
+    
+    if(!$stmt->execute()){
+        $err = 'sorry!';
+    }
+    else{
+        $alert = 'Create classroom successfully!';
+    }
+    return array($err, $alert);
+    
 }
+
+
+function upload_classroom_photo($filename){
+    $target_dir = "database/classroom_images/";
+    $target_file = $target_dir . basename($_FILES["classroom_image"]["name"]);
+    $uploadOk = 1;
+    $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+    $file = $_FILES["classroom_image"];
+    
+    if(isset($_POST["submit"])) {
+      $check = getimagesize($file["tmp_name"]);
+      if($check !== false) {
+        $uploadOk = 1;
+      } else {
+        $uploadOk = 0;
+      }
+    }
+    
+    // Check if file already exists
+    if (file_exists($target_file)) {
+      //echo "Sorry, file already exists.";
+      $uploadOk = 0;
+    }
+    
+    // Check file size
+    if ($file["size"] > 500000) {
+      echo "Sorry, your file is too large.";
+      $uploadOk = 0;
+    }
+    
+    // Allow certain file formats
+    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+    && $imageFileType != "gif" ) {
+      //echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+      $uploadOk = 0;
+    }
+    
+    // Check if $uploadOk is set to 0 by an error
+    if ($uploadOk == 0) {
+      //echo "Sorry, your file was not uploaded.";
+    // if everything is ok, try to upload file
+    } else {
+      $extension  = pathinfo( $file["name"], PATHINFO_EXTENSION );
+      $filename = $filename.'.'.$extension;
+      if (move_uploaded_file($file["tmp_name"], $target_dir.$filename)) {
+        //echo "The file ". htmlspecialchars( basename( ["name"])). " has been uploaded.";
+      } else {
+        //echo "Sorry, there was an error uploading your file.";
+      }
+    }
+    return $filename;
+    }
+    
+   
 ?>

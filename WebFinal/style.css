@@ -39,3 +39,8 @@ div h2 {
 #sign-out-form{
    display: none;
 }
+
+
+.col-md-4{
+    height:     max-content;
+}

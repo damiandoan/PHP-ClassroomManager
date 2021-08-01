@@ -28,6 +28,7 @@
            if ($data){
                print_r($email);
                $_SESSION['fullname'] = $data['fullname'];
+               $_SESSION['email'] = $data['email'];
                header('Location: homepage.php');
                exit();
                //more data

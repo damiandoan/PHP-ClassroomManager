@@ -61,7 +61,7 @@
                              } else{
                                  echo "Oops! Registrate unsuccessfully";
                              }
-                            $stmt->close();
+                            $connection->close();
                         //
                          }
                     }

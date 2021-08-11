@@ -31,6 +31,20 @@
     }
   }
   $switch_language = substr($switch_language, 0, -3);
+
+  
+  session_start();
+  if (isset($_SESSION['admin']) ){
+    header( "Location: adminHomepage.php");
+    exit();
+  }
+  else if(isset($_SESSION['email']))
+  {
+    header("Location: homepage.php");
+  }
+  else{
+    header("Location: login.php");
+  }
 ?>
 
 <!DOCTYPE html>

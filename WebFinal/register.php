@@ -1,80 +1,4 @@
-<?php
-    require('database.php');
-    if(isset($_POST['fullname']) && isset($_POST['email']) && isset($_POST['department_name']) && isset($_POST['password']) && isset($_POST['c_password']) && isset($_POST['tel'])){
-         print_r($_POST);
-         $fullname = $_POST['fullname'];
-         $email = $_POST['email'];
-         $password = $_POST['password'];
-         $c_password = $_POST['c_password'];
-         $department_name = $_POST['department_name'];
-         $tel = $_POST['tel'];
-         $err = '';
-         if(empty(trim($fullname))){
-             $err = 'Please enter your full name';
-         }
-         else if (empty(trim($department_name))){
-            $err = 'Please enter your department name';
-        }
-        else if (empty(trim($tel))){
-            $err = 'Please enter your phone number';
-        }
-        else if (empty(trim($email))){
-            $err = 'Please enter your email';
-        }
-        else if (empty(trim($password))){
-            $err = 'Please enter your password';
-        }
-        else if (empty(trim($c_password))){
-            $err = 'Please cofirm your password';
-        }
-        else{
-                    if (is_email_existed($email)==true){
-                        $err = 'email already taken';
-                    }
-                    
-                    
-                    if(strlen($password)<6){
-                        $err ='password too short, require more than 6 characters';
-                    }
-                    if($password != $c_password){
-                        $err = 'confirm password is invalid';
-                    }
-                    
 
-                    if($err == ''){
-                        //
-                         // Prepare an insert statement
-                         $sql = "INSERT INTO user (email,fullname,department_name,tel, user_password) VALUES (?, ?, ?,?, ?)";
-                         $connection = create_connection();
-         
-                         if($stmt = $connection->prepare($sql)){
-                             // Bind variables to the prepared statement as parameters
-                             //hashing password
-                             $password = password_hash($password, PASSWORD_BCRYPT);
-                             $stmt->bind_param("sssss", $email, $fullname, $department_name, $tel, $password);
-                             
-
-                             // Attempt to execute the prepared statement
-                             if($stmt->execute()){
-                                 // Redirect to login page
-                                 header("location: login.php");
-                             } else{
-                                 echo "Oops! Registrate unsuccessfully";
-                             }
-                            $stmt->close();
-                        //
-                         }
-                    }
-                    
-                    
-            
-        } 
-
-        
-    }
- 
-  
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -103,35 +27,60 @@
 <div id = 'login-div' class="col-lg-5 col-md-7 col-sm-10 col-10">
 
         <div id = 'login-container' class="container">
-        <form action="register.php" method="post">
+        <form  method="post"  id = 'sign-up-form'>
         <div class = "form-group"><h2>Register your account</h2> </div>
         <div class="form-group justify-content-center">
+        <p class ='text-danger' id ='sign-up-alert'> <?= $err?></p>
             <label for="input-group-text">Full name:</label>
-            <input type="input-group-text" name = 'fullname' class="form-control" placeholder="your full name" id="full name">
+            <input type="input-group-text" name = 'fullname' class="form-control" placeholder="your full name" id="full name" required>
         </div>
         <div class="form-group justify-content-center">
             <label for="input-group-text">Department:</label>
-            <input type="input-group-text" name = 'department_name' class="form-control" placeholder="your department" id="department">
+            <input type="input-group-text" name = 'department_name' class="form-control" placeholder="your department" id="department" required>
         </div>
         <div class="form-group justify-content-center">
             <label for="input-group-text">Phone number:</label>
-            <input type="tel" name = 'tel' class="form-control" placeholder="your phone number" id="phone number ">
+            <input type="tel" name = 'tel' class="form-control" placeholder="your phone number" id="phone number " required>
         </div>
         <div class="form-group justify-content-center">
             <label for="email">Email address:</label>
-            <input type="email" name = 'email' class="form-control" placeholder="Enter email" id="email">
+            <input type="email" name = 'email' class="form-control" placeholder="Enter email" id="email" required>
         </div>
         <div class="form-group">
             <label for="pwd">Password:</label>
-            <input type="password" name = 'password' class="form-control" placeholder="Enter password" id="pwd">
+            <input type="password" name = 'password' class="form-control" placeholder="Enter password" id="pwd" required>
         </div>
         <div class="form-group">
             <label for="pwd">Comfirm password:</label>
             <input type="password" name = 'c_password' class="form-control" placeholder="Enter passwowrd again" id="c_pwd">
         </div>
-        <button id = 'form-button' type="submit" class="btn btn-primary form-button">Create</button>
-        <p class ='error-alert'> <?= $err?></p>
+        
+        </form> 
+        <div>
+        <button id = 'sign-up-button'  onclick = 'sign_up()' class="btn btn-primary form-button">Create</button>
+        </div>
+        
+        
 </div>
+
+
+
+<div class="modal" id = 'go-login' tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create account success!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <a href="login.php"> <h2>click here to Login your new account now</h2></a>
+      </div>
+    </div>  
+  </div>
+</div>     
+
 
 </body>
 </html>

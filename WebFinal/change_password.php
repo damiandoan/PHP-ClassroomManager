@@ -12,7 +12,6 @@ if(isset($_GET['email']) && isset($_GET['token'])){
     
     $curr_time = time();
     $stmt -> bind_param('ssi', $email, $token, $curr_time);
-    echo $email, $token, $curr_time;
     if(!$stmt->execute()){
         $err = 'Sorry! something went wrong';
     }

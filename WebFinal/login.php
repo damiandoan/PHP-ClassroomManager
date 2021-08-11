@@ -1,45 +1,12 @@
 <?php
-//if user loggin move to homepage
-   session_start();
-   if (isset($_SESSION['fullname'])){
-       header( "Location: homepage.php");
-       exit();
-   }
+
    require('database.php');
    $error = '';
    $email = '';
    $password = '';
    $email_error = '';
    $password_error = '';
-
-   if(isset($_POST['email']) && isset($_POST['password'])){
-       $email = $_POST['email'];
-       $password = $_POST['password'];
-
-       if (empty($email)){
-           $email_error = 'Please enter email';
-       }
-       else if (empty($password)){
-        $password_error = 'Please enter password';
-       }
-       else {
-            $data = login($email, $password);
-           
-           if ($data){
-               print_r($email);
-               $_SESSION['fullname'] = $data['fullname'];
-               $_SESSION['email'] = $data['email'];
-               header('Location: homepage.php');
-               exit();
-               //more data
-           }
-           else{
-               $error = 'Invalid email or password';
-           }
-
-       }
-
-   }
+   
 
   
 ?>
@@ -71,15 +38,17 @@
 <div id ='login-div' class="col-lg-5 col-md-7 col-sm-10 col-10 ">
 
         <div id = 'login-container' class="container" >
-        <form action="login.php" method = 'post'>
+        <!-- <form action="login.php" method = 'POST'> -->
+        <form  method = 'POST' id ='sign-in-form'>
         <div class = "form-group"><h2>Login</h2> </div>
         <div class="form-group justify-content-center">
+            <p class ='text-danger' id = 'sign-in-alert'></p>
             <label for="email">Email address:</label>
-            <input type="email" name = 'email' class="form-control" placeholder="Enter email" id="email">
+            <input type="email" name = 's_email' class="form-control" placeholder="Enter email" id="email">
         </div>
         <div class="form-group">
             <label for="pwd">Password:</label>
-            <input type="password"  class="form-control" placeholder="Enter password" id="pwd" name = 'password'>
+            <input type="password"  class="form-control" placeholder="Enter password" id="pwd" name = 's_password' >
         </div>
         <div class="form-group form-check">
             <label class="form-check-label">
@@ -87,13 +56,14 @@
             </label>
         </div>
        
-        <button type="submit" class="btn btn-primary form-button">Login</button>
+        
         <div class="form-link" > <a onclick = 'reset_password_popup() ; return false;' href="">Forgot password?</a> </div>
         
         <div class="form-link" > <a href="register.php">Don't have  an account? Create one.</a> </div>
         </form> 
+        <button  class="btn btn-primary form-button" onclick="sign_in()">Login</button>
         </div> 
-        <p class ='error-alert'> <?= $err?></p>
+        
 
 </div>
 

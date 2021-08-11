@@ -1,37 +1,3 @@
-<?php
-// check is that user logined
-require('database.php');
-header ("Pragma-directive: no-cache");
-header ("Cache-directive: no-cache");
-header ("Cache-control: no-cache");
-header ("Pragma: no-cache");
-header ("Expires: 0");
-session_start();
-   if (!isset($_SESSION['email']) && !isset($_SESSION['admin']) ){
-       header( "Location: login.php");
-       exit();
-   }
-
-   //erease anything in session
-  if(isset($_SESSION['logout'])){
-    session_destroy();
-    header( "Location: login.php");
-       exit();
-  }
-
- 
- 
-
-if(isset($_POST['go-to-classroom'])){
-  $param = explode('<*>', $_POST['go-to-classroom']);
-  
-  $_SESSION['teacher_email'] = $param[0];
-  $_SESSION['classroom_name']= $param[1];
-  header('location: classroom.php');
-}
-  
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
